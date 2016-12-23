@@ -34,7 +34,6 @@ struct Position
 {
 	int x;
 	int y;
-
 };
 
 
@@ -45,7 +44,6 @@ struct Node
 	Node* pre;						//指向前节点
 	Node* next;						//指向后节点
 	int color;						//蛇身颜色
-
 };
 
 
@@ -63,7 +61,6 @@ struct Food
 {
 	Position pos;					//食物坐标
 	int color;						//食物颜色
-
 };
 
 
@@ -120,7 +117,6 @@ void init_snake(int length)
 
 	snake.head->pos = { x,y };
 
-
 	Node* pre_node = snake.head;							//指向前一蛇身的指针
 	Node* node;												//指向当前蛇身的指针 临时变量
 
@@ -153,13 +149,12 @@ void generate_food()
 	do
 	{
 		srand(time(NULL));									//随机数种子
-		int x = rand() % MAP_LENGTH ;					//随机产生 x y
+		int x = rand() % MAP_LENGTH ;				     	//随机产生 x y
 		int y = rand() % MAP_HEIGHT ;
 		food.pos = { x,y };									//食物坐标赋值
-		food.color = rand() % 4 ;						//随机颜色
+		food.color = rand() % 4 ;							//随机颜色
 
 	} while (in_snake(food.pos));							//in_snake 返回1 重新生成
-
 }
 
 
@@ -244,48 +239,47 @@ void snake_move(int direction)
 	Node* head = snake.head;
 	for (Node* node = snake.head->next; node != NULL; node = node->next )
 	{
-		node->pre->color = node->color;					//颜色前移一位
+		node->pre->color = node->color;										//颜色前移一位
 
 	}
 
-	snake.tail->pos.x = head->pos.x + direction_x[direction];			//坐标变为头的下一步
+	snake.tail->pos.x = head->pos.x + direction_x[direction];				//坐标变为头的下一步
 	snake.tail->pos.y = head->pos.y + direction_y[direction];
 	snake.tail->color = head_color;
 
 
 	Node* new_tail = snake.tail->pre;
-	new_tail->next = NULL;									    //倒数第二 成为新尾
+	new_tail->next = NULL;												    //倒数第二 成为新尾
 	snake.tail->pre = NULL;
 	snake.tail->next = head;
-	snake.head->pre = snake.tail;								//尾变头
+	snake.head->pre = snake.tail;											//尾变头
 
-	snake.head = snake.tail;									//更新头部
-	snake.tail = new_tail;								        //更新尾巴
+	snake.head = snake.tail;												//更新头部
+	snake.tail = new_tail;												   //更新尾巴
 
 
 	//蛇头撞墙
-	if (snake.head->pos.x < 0)									//左边撞墙 蛇头从右边出来
+	if (snake.head->pos.x < 0)												//左边撞墙 蛇头从右边出来
 	{
 		snake.head->pos.x = MAP_LENGTH;
 	}
 
 	if (snake.head->pos.x > MAP_LENGTH)
 	{
-		snake.head->pos.x = 0;									//右边撞墙  蛇头从左边出来
+		snake.head->pos.x = 0;												//右边撞墙  蛇头从左边出来
 	}
 
-	if (snake.head->pos.y < 0 )									//下边撞墙  从上面出来
+	if (snake.head->pos.y < 0 )												//下边撞墙  从上面出来
 	{
 		snake.head->pos.y = MAP_HEIGHT;
 	}
 
-	if (snake.head->pos.y > MAP_HEIGHT)							//上边出墙 从下面出来
+	if (snake.head->pos.y > MAP_HEIGHT)										//上边出墙 从下面出来
 	{
 		snake.head->pos.y = 0;
 	}
 
-	current_direction = direction;								//更新当前方向
-
+	current_direction = direction;											//更新当前方向
 }
 
 
@@ -297,11 +291,11 @@ void display()
 	float y_unix = 20.0f / MAP_HEIGHT;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();								//原点回到窗口中心
+	glLoadIdentity();														//原点回到窗口中心
 
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		//绘制线
-	gluOrtho2D(0.0f, 20.0f, 0.0f, 20.0f);			//视角裁剪
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);								//绘制线
+	gluOrtho2D(0.0f, 20.0f, 0.0f, 20.0f);									//视角裁剪
 
 
 	//绘制网格
@@ -350,7 +344,6 @@ void display()
 
 
 	glutSwapBuffers();
-
 }
 
 void InitGL()
@@ -363,7 +356,6 @@ void InitGL()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
 
 }
 
@@ -406,7 +398,6 @@ void change_direction(int key, int x, int y)
 	default:
 		break;
 	}
-
 }
 
 
@@ -437,11 +428,10 @@ void onTimer(int value)
 
 		snake_move(control_direction);
 
-		glutTimerFunc(GAME_SPEED, onTimer, 0);					//重复调用
+		glutTimerFunc(GAME_SPEED, onTimer, 0);						//重复调用
 
 	}
 }
-
 
 
 
@@ -452,18 +442,18 @@ int main(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
 
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(100, 100);				
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("hello");
 
 	InitGL();
 
-	glutDisplayFunc(display);
-	glutIdleFunc(display);						//绘制
+	glutDisplayFunc(display);										//绘制
+	glutIdleFunc(display);											
 
-	glutKeyboardFunc(key_pressed);								//普通按键回调
-	glutSpecialFunc(change_direction);						//方向键回调
-
+	glutKeyboardFunc(key_pressed);									//普通按键回调
+	glutSpecialFunc(change_direction);								//方向键回调
+		
 	glutTimerFunc(GAME_SPEED, onTimer, 0);
 
 	glutMainLoop();
