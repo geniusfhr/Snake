@@ -86,6 +86,8 @@ struct Color
 Color color[] =
 {
 	{ RED    },						//color[0]
+	{ GREEN   },						//color[1]
+	{ BLUE  },						//...
 	{ YELLOW },
 	{ WHITE  }
 };
